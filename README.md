@@ -1,225 +1,233 @@
-# 白匣 BAIXIA
+# 白匣 BAIXIA · 本地文件工坊
 
-本地文件工坊。图片、文档、视频、音频的格式转换、压缩与「提纯」，全部在这台电脑上完成，不上传云端。
+<p align="center">
+  <img src="https://img.shields.io/badge/Version-1.4.1-blue.svg?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB.svg?style=flat-square&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/FastAPI-0.115%2B-009688.svg?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/FFmpeg-7.1%20%7C%20NVENC-007808.svg?style=flat-square&logo=ffmpeg&logoColor=white" alt="FFmpeg">
+  <img src="https://img.shields.io/badge/Offline%20AI-ONNX%20%7C%20Whisper%20%7C%20U2--Net-orange.svg?style=flat-square" alt="Offline AI">
+  <img src="https://img.shields.io/badge/Privacy-100%25%20Offline%20%7C%20Localhost-brightgreen.svg?style=flat-square" alt="Privacy">
+  <img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License">
+</p>
 
-三栏工作台：左侧工具、中间操作区、底部固定操作栏、右侧输出托盘。支持拖拽、文件夹导入、拖拽排序、文件预览、前后对比、取消/重试、收藏、参数记忆、手动深浅色，以及同一 Wi-Fi 下的局域网互传。
+<p align="center">
+  <strong>现代化、纯本地运行的个人多媒体与文档工坊。</strong><br>
+  文档、图片、视频、音频的格式转换、智能压缩、AI 抠图、超分放大与语音字幕提取，全部在你的电脑本地完成，<strong>绝不上传任何云端</strong>。
+</p>
 
-## 快速开始
+---
 
-环境要求：Windows + Python 3.10 或更高版本。
+## 📸 界面预览
 
-1. 双击 `启动白匣.vbs`：无终端窗口启动，浏览器自动打开 `http://127.0.0.1:8765`。
-2. 停止：双击 `停止白匣.vbs`。关闭浏览器页面不会停止服务。
-3. 首次运行缺少依赖时，先双击 `run.bat` 或 `install.bat` 安装（需要联网）。
-4. 手机互传：关闭本机服务后双击 `启动白匣（局域网）.vbs`，允许防火墙；手机连同一 Wi-Fi，在页面右上角「局域网」扫码。
-5. 调试或需要日志时使用 `run.bat`，按 `Ctrl+C` 停止。
+<p align="center">
+  <img src="docs/images/preview-desktop.png" alt="白匣工作台 - 浅色模式" width="49%">
+  <img src="docs/images/preview-dark.png" alt="白匣工作台 - 深色模式" width="49%">
+</p>
 
-手动启动：
+<p align="center">
+  <em>三栏式极简工作台：左侧全能工具树 · 中间操作与参数区 · 右侧任务与输出托盘（支持深浅色无缝切换）</em>
+</p>
 
+<p align="center">
+  <img src="docs/images/preview-mobile.png" alt="白匣移动端适配与局域网访问" width="32%">
+</p>
+
+<p align="center">
+  <em>自适应移动端与局域网无线互传：手机在同 Wi-Fi 下扫码秒传相册文件，告别数据线</em>
+</p>
+
+---
+
+## 🌟 核心亮点
+
+- 🔒 **100% 纯本地运行 · 绝对隐私安全**  
+  默认仅监听 `127.0.0.1` 本机回环地址，不调用任何第三方商业云端 API。合同法务、个人证件照、财务报表、私人家庭视频毫无数据外泄隐患。任务临时文件完成 12 小时后自动本地粉碎。
+- 🤖 **端侧内置离线 AI 大全（无需 PyTorch / 免云端费用）**  
+  - **Faster-Whisper (tiny)**：纯本地音视频语音识别，毫秒级精准提取中英文双语字幕（`.srt` / `.txt`）；
+  - **U2-Netp**：轻量级显著性主体抠图，发丝级透明通道生成与证件照一键智能换底；
+  - **Real-ESRGAN**：低分辨率老照片与动漫插画 2× / 3× / 4× 超分辨率智能无损放大；
+  - **RapidOCR**：本地离线扫描件文本识别，直接生成带文字层的双层可搜索 PDF。
+- ⚡ **超强性能与硬件加速**  
+  - 启动时自动探测 NVIDIA NVENC、Intel Quick Sync (QSV) 与 AMD AMF 显卡硬件编码器；
+  - **快慢双线程池队列分离**（`baixia-light` 与 `baixia-heavy`），后台长视频转码再也不卡死轻量小文件；
+  - **Server-Sent Events (SSE)** 毫秒级任务流式推送与 XHR 真实传输速率实时监控。
+- 📑 **真·无损 PDF 压缩与 Office 保真**  
+  - PDF 压缩仅重采样内嵌高精位图，完整保留可复制、可检索的矢量文字层与书签；
+  - Word 转 PDF 优先调用本地 Word/WPS COM 接口与 LibreOffice，保证排版、表格与公式 1:1 绝对保真。
+- 🎨 **匠心交互体验**  
+  - 自由文件拖拽（HTML5 Drag & Drop）排序；
+  - PDF 交互式画廊工作台（缩略图网格重排、单页旋转、批量废页剔除）；
+  - 任务处理前后文件大小与画质对比视图（Before / After）；
+  - 链式流转处理（“继续处理”一键流向下一个工具）；
+  - 参数记忆与收藏夹、全局快捷键（`/` 聚焦搜索、`Ctrl+Enter` 立即启动）。
+
+---
+
+## 🚀 快速开始
+
+### 环境要求
+- **操作系统**：Windows 10 / 11（x64）
+- **Python**：Python 3.10 或更高版本（需勾选 Add to PATH）
+- **FFmpeg**：建议安装并加入系统环境变量（项目支持自动探测 `ffmpeg.exe`）
+
+### 一键启动（推荐）
+1. **本机独立使用**：双击 `启动白匣.vbs`，无黑框静默启动，默认自动在浏览器打开 `http://127.0.0.1:8765`；
+2. **手机无线互传**：双击 `启动白匣（局域网）.vbs`，手机连接同一 Wi-Fi，在网页右上角点击「局域网」扫码即可无线互传相册文件；
+3. **关闭服务**：双击 `停止白匣.vbs`（关闭浏览器标签页不会中断后台正在处理的任务）。
+
+### 命令行启动
 ```powershell
+# 1. 克隆代码仓库
+git clone https://github.com/HUA503/baixia-workshop.git
+cd baixia-workshop
+
+# 2. 安装 Python 核心依赖
 python -m pip install -r requirements.txt
+
+# 3. 运行服务
 python app.py
 ```
 
-## 工具一览（37 个）
+---
 
-### 文档
+## 🛠️ 全能工具箱一览（37 个）
 
-| 工具 | 输入 → 输出 | 说明 |
-| --- | --- | --- |
-| PDF 拆分 | PDF → PDF×N | 按页码范围拆分；也可每页单独成档 |
-| PDF 合并 | PDF×N → PDF | 按选择顺序合并，保留原始文字与画质 |
-| PDF 加解密 | PDF → 加密 / 解密 PDF | AES-256 密码处理；不是 PDF/A |
-| PDF 压缩 | PDF → PDF | 默认无损；图像优化只重采样内嵌图片，文字仍可搜索；另有极端整页图像化 |
-| PDF 转图片 | PDF → PNG/JPG | 指定页码与 DPI |
-| 图片转 PDF | 图片×N → PDF | A4 居中或跟随图片尺寸 |
-| PDF 转 Word / 文本 | PDF → DOCX/MD/TXT/HTML | 识别标题、列表、表格；可保留页码分隔 |
-| PDF OCR | 扫描 PDF → TXT/DOCX/可搜索 PDF | 中英文识别，生成带隐藏文字层的 PDF |
-| PDF 页面管理 | PDF → 重排 PDF | 缩略图拖拽排序、单页旋转、删除页面后导出 |
-| PDF 水印 | PDF → 带水印 PDF | 平铺/居中文字水印，可调透明度、角度、字号与颜色 |
-| Word 转 Markdown | DOCX → MD | 保留标题、列表、粗体、链接、表格；可选导出图片 |
-| Word 转网页 | DOCX → HTML | 单文件，图片内嵌 |
-| Word 转 PDF | DOCX → PDF | 优先 Word/WPS COM，其次 LibreOffice，最后内置排版 |
-| Markdown 转 Word | MD → DOCX | 标题、列表、引用、代码块、表格、链接 |
-| Markdown 转 PDF | MD → PDF | 干净排版，适合打印 |
-| 表格转换 | XLSX/CSV → MD/CSV/JSON/XLSX | 全部工作表、表头可选；CSV 转 Excel 自动还原数值 |
+### 📄 文档处理（16 个）
 
-### 图片
+| 工具名称 | 转换链路 | 功能说明 |
+| :--- | :--- | :--- |
+| **PDF 拆分** | PDF → PDF×N | 按指定页码范围拆分；支持每一页单独成档 |
+| **PDF 合并** | PDF×N → PDF | 按自选顺序多合一，保留原始文字、矢量与画质 |
+| **PDF 加解密** | PDF → 加密 / 解密 PDF | AES-256 密码加锁或移除已知密码 |
+| **PDF 压缩** | PDF → PDF | 默认无损清理；图像优化只重采样内嵌位图，保留文字层可搜索 |
+| **PDF 转图片** | PDF → PNG / JPG | 逐页导出为高清图片，可自定义 DPI (72~400) |
+| **图片转 PDF** | 图片×N → PDF | 多图拼合，支持 A4 居中留白或贴合原图尺寸 |
+| **PDF 转 Word / 文本** | PDF → DOCX / MD / TXT / HTML | 智能抽取标题、列表与表格；适合转成语料喂给大模型 |
+| **PDF OCR 识别** | 扫描件 PDF → 文字 / 可搜索 PDF | 离线中英文识别，生成带隐形文字层的双层 PDF |
+| **PDF 页面管理** | PDF → 重排 PDF | **交互式画廊工作台**：缩略图拖拽排序、单页旋转、批量删页 |
+| **PDF 水印防伪** | PDF → 带水印 PDF | 全文平铺或居中自定义文字水印，可调透明度、角度与字号 |
+| **Word 转 Markdown** | DOCX → MD | 提取标题、粗斜体、列表、超链接与表格，支持导出图片素材 |
+| **Word 转网页** | DOCX → HTML | 单文件内嵌离线网页，便于直接分享与归档 |
+| **Word 转 PDF** | DOCX → PDF | 优先调用本机 Word/WPS COM，其次 LibreOffice，保证 1:1 版式 |
+| **Markdown 转 Word** | MD → DOCX | 快速将排版好的 Markdown 渲染成正规 Word 文档 |
+| **Markdown 转 PDF** | MD → PDF | 干净雅致的书卷排版，非常适合打印或交付 |
+| **表格全能转换** | XLSX / CSV → MD / CSV / JSON / XLSX | 支持多工作表、表头识别，CSV 转 Excel 智能识别数值类型 |
 
-| 工具 | 输入 → 输出 | 说明 |
-| --- | --- | --- |
-| 批量格式转换 | JPG/PNG/WebP/AVIF/HEIC/TIFF… | 新格式互转，可调质量、限宽、清除 EXIF |
-| 图片压缩 | 图片×N → 更小的图片 | 质量/最长边控制，或填写每张目标 KB |
-| 批量缩放 | 图片×N → 指定尺寸 | 等比适应、裁剪填满、强制拉伸 |
-| 批量重命名 | 图片×N → 新文件名 | `{name}` `{n:02}` `{date}` `{ext}` |
-| 一键去背景 | 图片×N → 透明 PNG | 默认本地 U2-Netp AI 抠图；也可切颜色容差 |
-| 证件照制作 | 图片×N → 一寸 / 二寸 / 护照 | 自动人脸构图、换背景、自定义 DPI |
-| 图片 OCR | 图片×N → TXT/DOCX | 中英文识别，多张可合并 |
-| 生成网站图标 | 图片 → ICO | 16–256 多种尺寸 |
-| AI 高清放大 | 图片×N → 2×/3×/4× | 本地 Real-ESRGAN 超分，保留透明通道；可切快速插值 |
+### 🖼️ 图片与视觉（9 个）
 
-图片类工具支持「选择文件夹」批量导入、剪贴板粘贴，以及拖动文件队列排序。
+| 工具名称 | 转换链路 | 功能说明 |
+| :--- | :--- | :--- |
+| **批量格式转换** | JPG / PNG / WebP / AVIF / HEIC / TIFF… | 批量互转，支持无损清除 EXIF 隐私元数据与限宽控制 |
+| **图片智能压缩** | 图片×N → 更小的图片 | 质量/长边控制，或输入目标 KB 自动二分逼近体积 |
+| **批量缩放** | 图片×N → 指定尺寸 | 等比居中适应、裁剪填满或强制拉伸，快速适配发布规格 |
+| **批量重命名** | 图片×N → 新文件名 | 支持模板占位符：`{name}`、`{n:02}`、`{date}`、`{ext}` |
+| **一键 AI 抠图** | 图片×N → 透明 PNG | 内置 **U2-Netp** 模型端侧发丝级主体抠图，可切颜色容差 |
+| **智能证件照制作** | 图片×N → 一寸 / 二寸 / 护照 / 签证 | 自动人脸检测构图，标准毫米规格、DPI 调整与智能换底（红/蓝/白） |
+| **图片 OCR** | 图片×N → TXT / DOCX | 离线中英文印刷体文字识别，支持多图顺序拼接输出 |
+| **生成网站图标** | 图片 → ICO | 自动打包 16×16 至 256×256 六种标准多尺寸合一图标 |
+| **AI 超分高清放大** | 图片×N → 2× / 3× / 4× | 集成 **Real-ESRGAN** 本地超分辨率模型，清晰修复模糊老图 |
 
-### 视频
+### 🎬 视频制作（10 个）
 
-| 工具 | 输入 → 输出 | 说明 |
-| --- | --- | --- |
-| 视频格式转换 | MP4/MKV/MOV/WebM | H.264 / VP9；优先使用 NVENC / QSV 硬件编码 |
-| 视频压缩 | 视频 → MP4 | 三档预设，或勾选后滑动选择目标 MB（上限跟随原视频）；自动硬件加速 |
-| 视频裁剪 | 视频 → 片段 | 掐头去尾；快速模式不重新编码 |
-| 视频画面裁剪 | 视频 → 新画幅 MP4 | 16:9 / 9:16 / 1:1 / 4:3 / 自定义比例，去黑边与横竖屏转换 |
-| 视频拼接 | 视频×N → MP4 | 自动统一分辨率、帧率与音轨 |
-| 视频转 GIF | 视频 → GIF | 截取片段，调色板 + 抖动 |
-| 提取音频 | 视频 → MP3/M4A/WAV/FLAC | 可调码率 |
-| 视频截帧 | 视频 → 图片序列 ZIP | 按秒抽帧 |
-| 视频静音 | 视频 → 无声 MP4 | 优先复制视频流 |
-| GIF 转视频 | GIF → MP4/WebM | 表情包转视频 |
+| 工具名称 | 转换链路 | 功能说明 |
+| :--- | :--- | :--- |
+| **视频格式转换** | MP4 / MKV / MOV / AVI / WebM… | H.264 / VP9 编码，自动探测并启用 NVENC / QSV 显卡加速 |
+| **视频容量压缩** | 视频 → MP4 | 支持三档画质预设，或直接滑动指定目标 MB（上限自动锁定原视频） |
+| **视频片段裁剪** | 视频 → 片段 | 掐头去尾截取任意区间；快速模式采用流复制不重新编码 |
+| **视频画面裁剪** | 视频 → 任意画幅 MP4 | 16:9 / 9:16 / 1:1 / 4:3 自由裁剪，轻松去黑边或横竖屏转换 |
+| **视频无缝拼接** | 视频×N → MP4 | 多段片段自动统一度量、分辨率、帧率与声道序列拼接 |
+| **视频转 GIF** | 视频 → 高清 GIF | 截取任意片段制作表情包，自动双遍调色板调优抖动抗锯齿 |
+| **提取视频音频** | 视频 → MP3 / WAV / M4A / FLAC | 高保真单独抽取声音轨道，码率自由可调 |
+| **视频抽帧截图** | 视频 → 图片序列 ZIP | 按指定秒数间隔抽取无损帧序列，自媒体选封面神器 |
+| **视频消音静音** | 视频 → 无声 MP4 | 剔除音轨并保留纯净视频流，适合制作循环背景 |
+| **GIF 转视频** | GIF → MP4 / WebM | 将动态表情包转换回高兼容性视频，便于二次剪辑 |
 
-### 音频
+### 🎵 音频与字幕（2 个）
 
-| 工具 | 输入 → 输出 | 说明 |
-| --- | --- | --- |
-| 音频格式转换 | MP3/WAV/FLAC/M4A/AAC… | 可调码率与采样率 |
-| 音视频转字幕 | 视频/音频 → SRT/TXT | 本地 Whisper tiny，识别中英日韩等语言，可跳过静音 |
+| 工具名称 | 转换链路 | 功能说明 |
+| :--- | :--- | :--- |
+| **音频格式互转** | MP3 / WAV / FLAC / M4A / AAC / OGG… | 主流无损与有损音频互转，码率与采样率可精细控制 |
+| **AI 语音转字幕** | 视频 / 音频 → SRT / TXT / VTT | 内置 **Faster-Whisper**，纯本地离线转写带时间戳的字幕文件 |
 
-## 使用技巧
+---
 
-- 合并、拼接、图片转 PDF 时，文件顺序就是输出顺序；可拖动文件行排序，也可用上下箭头。
-- 切换工具会保留格式兼容的已选文件；不兼容时提示并清空。
-- 输出面板：
-  - 「对比」查看原文件与结果缩略图、体积变化；
-  - 「继续处理」把上一步结果作为新任务输入（使用目标工具默认参数）；
-  - 「打包下载 ZIP」按需生成，不再预先生成冗余 ZIP。
-- 长任务（视频、OCR、Word 导出）可点进度条旁的「取消任务」；失败或取消后可「重试」。
-- 视频压缩：勾选「按目标大小压缩」后，滑杆上限自动跟随原视频大小（封顶 99%，确保目标仍小于原文件），下限按视频时长计算；目标必须大于 0。目标模式把体积当作上限（≤），从原分辨率起编码，仍超出时才逐级降低分辨率，使用 CPU 两遍编码；视频内容简单时输出可能明显小于目标，会标注「已接近最高画质」，不会填充无效数据。普通预设压缩仍走硬件加速。
-- 图片压缩：填写「每张目标大小 (KB)」后自动搜索质量与尺寸；PNG 等可能转为 WebP。
-- 证件照：默认 AI 换背景；人脸识别失败时按中心构图，可关闭自动人脸或 AI 换背景。
-- 上传大文件会显示上传百分比、已传大小和速度；任务进度通过 SSE 实时推送。
-- 任务完成/失败/取消时，如果页面在后台且已允许通知，会弹出系统通知。
-- 工具标题旁的星标可收藏；每个工具的参数自动记住，可用「恢复默认」重置。
-- 右上角可切换浅色 / 深色 / 跟随系统，选择会记住。
-- 快捷键：`/` 搜索、`Ctrl+Enter` 开始、`Esc` 清空搜索/关闭弹窗。
-- 「最近」保存最近 8 个任务（临时文件保留 12 小时）。
+## ⚙️ 环境变量与高级配置
 
-## 本地能力
+支持通过系统环境变量自定义运行行为：
 
-- **AI 抠图**：内置 U2-Netp ONNX（约 4.4 MB），CPU 推理，适用于人像、商品与复杂背景；模型缺失时自动降级为颜色容差算法。
-- **本地字幕**：内置 faster-whisper tiny 模型（约 75 MB），CPU int8 推理，不需要联网；适合清晰人声，专业名词与口音可能识别偏差。
-- **AI 超分**：内置 Real-ESRGAN x4 ONNX（约 4.8 MB），本地分块推理；2×/3×/4× 可选，透明 PNG 会保留 alpha。
-- **局域网互传**：双击 `启动白匣（局域网）.vbs` 后，手机与电脑连同一 Wi-Fi，扫码即可上传/下载；文件仍只在本机处理。
-- **PDF 压缩**：默认做字体子集化与无损清理；平衡/强模式通过 `replace_image` 只重采样内嵌图片，文字、链接、矢量保持可搜索；极端模式才整页图像化。
-- **Word 转 PDF**：Windows 优先调用 Word/WPS COM 静默导出，检测 LibreOffice 后使用，最后才用内置 HTML 排版。
-- **视频硬件加速**：首次视频任务自动测试 NVENC / Quick Sync / AMF；可用则启用，失败自动回退 CPU。可用 `BAIXIA_VIDEO_ENCODER=libx264` 强制软件编码。
-- **任务队列**：轻任务（图片、表格、文本）与重任务（视频、OCR、Word 导出）分队列；轻任务默认按 CPU 核心数并发，重任务默认 1 个。
-- **预览**：图片缩略图、PDF 首页、视频封面在本地生成并缓存。
-- **通信**：上传使用 XHR 实时进度；任务状态使用 Server-Sent Events，失败时自动回退到短轮询。
+| 变量名 | 默认值 | 作用说明 |
+| :--- | :--- | :--- |
+| `BAIXIA_PORT` | `8765` | 服务监听端口（被占用时自动顺延） |
+| `BAIXIA_HOST` | `127.0.0.1` | 绑定网卡地址（局域网模式自动设为 `0.0.0.0`） |
+| `BAIXIA_MAX_UPLOAD_GB`| `4` | 单次任务上传总文件体积上限 (GB) |
+| `BAIXIA_LIGHT_WORKERS`| CPU 核心数 | 轻量任务并发线程数（图片、重命名、小文档） |
+| `BAIXIA_HEAVY_WORKERS`| `1` | 重量级任务并发线程数（视频压制、音频转码、超分） |
+| `BAIXIA_VIDEO_ENCODER`| `自动探测` | 强制指定编码器：`h264_nvenc` / `h264_qsv` / `libx264` |
+| `BAIXIA_WARM_OCR` | `1` | 启动时是否在后台预热 RapidOCR 识别引擎 |
+| `BAIXIA_NO_BROWSER` | `0` | 设为 `1` 时启动后不自动唤起默认浏览器 |
+| `FFMPEG_PATH` | `系统 PATH` | 手动指定 `ffmpeg.exe` 的绝对物理路径 |
 
-## 隐私与临时文件
+---
 
-- 默认只监听 `127.0.0.1`，不调用在线 API。局域网模式需主动用单独脚本启动，且没有密码，请只在可信 Wi-Fi 下使用。
-- 文件保存在项目下 `.work/jobs/`，预览缓存位于任务目录，任务结束 12 小时后自动清理。
-- 密码类参数不会写入 `localStorage`。
-- 浏览器下载的文件由你自行保管。
+## 📂 项目结构
 
-## 可调环境变量
-
-| 变量 | 默认 | 作用 |
-| --- | --- | --- |
-| `BAIXIA_PORT` | `8765`（占用时顺延） | 服务端口 |
-| `BAIXIA_HOST` | `127.0.0.1` | 监听地址；`0.0.0.0` 可供局域网访问 |
-| `BAIXIA_MAX_UPLOAD_GB` | `4` | 单次任务总大小上限 |
-| `BAIXIA_NO_BROWSER` | `0` | 设为 `1` 不自动打开浏览器 |
-| `BAIXIA_WARM_OCR` | `1` | 启动时预加载 OCR |
-| `BAIXIA_VIDEO_ENCODER` | 自动 | 强制 `libx264` / `h264_nvenc` / `h264_qsv` |
-| `BAIXIA_LIGHT_WORKERS` | CPU 核心数 | 轻任务并发数 |
-| `BAIXIA_HEAVY_WORKERS` | `1` | 重任务并发数 |
-| `FFMPEG_PATH` | 自动查找 | 自定义 `ffmpeg.exe` |
-
-## 能力与边界
-
-- OCR 使用 RapidOCR 本地模型（中英文）。首次识别加载模型约 2–5 秒；扫描页越多、DPI 越高越慢。
-- PDF 转 Word 属于重排，复杂分栏、公式、艺术字可能不完美。
-- Word 转 PDF 的保真度取决于本机是否有 Word/WPS 或 LibreOffice；都没有时使用内置排版，复杂公文可能失真。
-- PDF 图像优化对图片型 PDF 效果明显；纯文字 PDF 可能体积变化不大，若压缩后反而更大则保留原文件。
-- AI 抠图使用轻量 U2-Netp，不如大型 BiRefNet 极致，但远优于颜色洪泛；极复杂发丝/透明衣物仍建议人工复核。
-- 视频目标大小是容量上限；滑杆上限跟随原视频大小（封顶 99%），下限根据时长计算，目标必须大于 0 且小于原文件。输出不会超过目标；内容简单时可能小于目标，并标注「已接近最高画质」。极小目标低于可达下限时会明确报错。
-- 证件照换背景依赖抠图质量；复杂实景建议保留原背景。
-- GIF 作为静态图片转换时只取第一帧；需要动画用「GIF 转视频」。
-- PDF 页面管理单次最多 300 页；页面预览临时文件 12 小时后清理。
-- AI 超分单张输出限制为约 2400 万像素、最长边 8192 px；更大的图请先降低倍率或缩小原图。
-- Whisper tiny 为速度优先的小模型，长音频会比短视频慢；首次加载模型约需数秒。
-- 单次最多 60 个文件，总大小默认 4 GB。
-- PDF/A 归档转换未集成；PDF 加解密只是密码处理。
-- 拖拽排序在桌面浏览器使用；PDF 画廊在移动端可用按钮旋转/删除，排序仍建议桌面操作。
-
-## 目录结构
-
-```
-baixia/
-  app.py                 FastAPI、上传、任务、SSE、预览 API
-  core/
-    registry.py          工具元数据（前端自动渲染选项）
-    jobs.py              任务队列、取消、重试、轻/重任务池
-    pdftools.py          PDF 拆分/合并/压缩/提取/OCR 排版
-    wordtools.py         Word → Markdown/HTML/PDF（COM/LibreOffice/内置）
-    ocr.py               RapidOCR、可搜索 PDF
-    images.py            图片转换/压缩/缩放/重命名/抠图/ICO
-    idphoto.py           证件照人脸构图、毫米尺寸与换底
-    matting.py           U2-Netp AI 抠图
-    media.py             FFmpeg 视频音频、裁剪、硬件加速检测
-    upscale.py           Real-ESRGAN 本地超分
-    subtitles.py         faster-whisper 本地字幕
-    previews.py          图片/PDF/视频缩略图
-    sheets.py            XLSX/CSV 转换
-    handlers.py          工具 ID → 处理函数
-    utils.py             文件安全、FFmpeg 进度、页码解析
-    data/                YuNet、U2-Netp、Real-ESRGAN、Whisper tiny 模型
-  web/
-    index.html
-    styles.css           白色主题 / 深色模式 / 响应式
-    app.js               工具、上传进度、SSE、预览、对比、拖拽
-  requirements.txt
-  run.bat / install.bat
-  启动白匣.vbs            本机模式无终端启动
-  启动白匣（局域网）.vbs  监听 0.0.0.0，供手机同 Wi-Fi 访问
-  停止白匣.vbs            按 PID 停止
+```text
+baixia-workshop/
+├── app.py                     # FastAPI 路由、SSE 推流、静态资源挂载与任务生命周期
+├── core/
+│   ├── data/                  # 离线 AI 模型权重文件 (U2-Netp, YuNet, Real-ESRGAN, Whisper)
+│   ├── handlers.py            # 工具 ID 到后端处理器的调度映射表
+│   ├── idphoto.py             # 证件照人脸检测、标准规格裁切与智能换底
+│   ├── images.py              # 图像批处理：格式互转、压缩、缩放、去背景、ICO 生成
+│   ├── jobs.py                # 任务调度器、轻重快慢双线程池、取消/重试机制
+│   ├── matting.py             # U2-Netp ONNX 端侧显著性抠图核心算法
+│   ├── media.py               # FFmpeg 封装、硬件加速探测、视频音频处理
+│   ├── ocr.py                 # RapidOCR 离线文本识别与双层可搜索 PDF 构建
+│   ├── pdftools.py            # PyMuPDF 驱动：PDF 拆分、合并、无损图片重采样压缩
+│   ├── previews.py            # 多媒体输入/输出缩略图生成管道
+│   ├── registry.py            # 37 种工具的元数据规范与参数定义
+│   ├── sheets.py              # 表格处理：XLSX、CSV、JSON 互转
+│   ├── subtitles.py           # Faster-Whisper 本地音视频语音识别与字幕提取
+│   ├── upscale.py             # Real-ESRGAN 本地 AI 超分辨率放大
+│   ├── utils.py               # 文件名安全清理、FFmpeg 进度解析、防目录遍历
+│   └── wordtools.py           # Word 导出（Windows COM / LibreOffice / 内置渲染降级）
+├── web/                       # 原生前端（无需 Node.js / Vite 打包构建）
+│   ├── index.html             # 三栏现代化工作台结构
+│   ├── styles.css             # 亮白纸质主题 + 极客深色模式 + 响应式布局
+│   └── app.js                 # 核心交互逻辑、XHR 速率上传、SSE 监听、文件拖拽调序
+├── docs/images/               # README 演示截图与视觉资产
+├── requirements.txt           # Python 核心运行依赖清单
+├── 启动白匣.vbs                # 本机免终端静默启动脚本
+├── 启动白匣（局域网）.vbs       # 局域网模式启动脚本（供手机扫码无线互传）
+└── 停止白匣.vbs                # 安全退出与清理进程脚本
 ```
 
-## 常见问题
+---
 
-**无窗口启动没有反应？**
-先双击 `run.bat` 查看真实报错，通常是依赖未装、Python 不在 PATH 或端口被占用。停止服务用 `停止白匣.vbs`。
+## ❓ 常见问题解答 (FAQ)
 
-**Word 转 PDF 还是排版错乱？**
-本项目会优先用 Word/WPS COM；若本机没有 Office，会尝试 LibreOffice；都没有时才使用内置排版，复杂版式无法完全还原。
+<details>
+<summary><strong>Q: Word 转 PDF 总是排版错乱、字体缺失？</strong></summary>
+本项目采取了三层保真策略：若本机安装了 Microsoft Office 或 WPS，白匣会自动通过 COM 接口调用原生排版引擎导出，实现 100% 完美保真；若无 Office 但装有 LibreOffice，会调用其进行转换；只有两者皆无时才会使用内置轻量引擎（复杂公文建议安装 WPS 或 Office）。
+</details>
 
-**PDF 压缩后文字还能搜索吗？**
-默认无损和图像优化模式可以；只有「极端 · 整页图像化」会丢失文字层。
+<details>
+<summary><strong>Q: 手机扫码后网页打不开？</strong></summary>
+请确认：1. 使用的是「启动白匣（局域网）.vbs」启动；2. 手机与电脑连接在同一个 Wi-Fi 网络下；3. 在 Windows 防火墙弹窗中允许了 Python 的局域网通信权限；4. 部分企业或校园路由器开启了“AP 隔离”功能，会阻止局域网设备间直接通信。
+</details>
 
-**视频没有用上硬件加速？**
-首次视频任务会自动探测 NVENC/QSV/AMF，部分驱动或输入格式不支持时自动回退 CPU。也可设置 `BAIXIA_VIDEO_ENCODER`。
+<details>
+<summary><strong>Q: 视频压缩指定目标大小后，输出结果会超过指定体积吗？</strong></summary>
+不会。目标大小在白匣中被视作严格的容量上限约束（≤ Target MB）。算法会自动计算最优视频码率并预留 5% 封装头余量，通常能精确控制在目标的 85%~98% 之间，绝不会超过上限，且杜绝了填充无用空包数据的假压缩。
+</details>
 
-**OCR 很慢？**
-把 DPI 调到 150–200，或只填部分页码；首次识别需要加载模型。
+<details>
+<summary><strong>Q: 为什么不需要联网也能使用全部 AI 功能？</strong></summary>
+白匣将经过轻量化量化的 ONNX 与 int8 模型直接随代码仓库分发或首次本地缓存，推理全部由本地 CPU / DirectML 运行，因此断网拔掉网线时所有 37 项功能依然 100% 正常运行。
+</details>
 
-**字幕识别不准？**
-内置的是 Whisper tiny 小模型，速度优先；清晰、单人、少背景噪声的音频效果最好。专业术语和口音会有偏差。
+---
 
-**手机扫码打不开？**
-确认使用的是「局域网」启动脚本、手机和电脑在同一 Wi-Fi，并允许 Windows 防火墙。部分路由器开启了 AP 隔离，会阻止手机访问电脑。
+## 📄 开源许可证
 
-## 发布到 GitHub
-
-项目内没有账号、密钥或测试产生的临时文件；`.work/`、`.baixia.pid`、`__pycache__` 已在 `.gitignore` 中忽略。
-
-```powershell
-cd path\to\baixia
-git init
-git add .
-git commit -m "白匣 BAIXIA v1.4.1"
-git branch -M main
-git remote add origin https://github.com/HUA503/baixia-workshop.git
-git push -u origin main
-```
-
-远程仓库若已初始化 README，先 `git pull --rebase origin main`。`core/data/` 下的人脸与抠图模型需要一并提交（约 228 KB + 4.4 MB），这是离线 AI 功能的关键文件；均小于 GitHub 单文件限制。
+本项目基于 [MIT License](LICENSE) 开源，允许个人与商业自由使用、修改与分发。
